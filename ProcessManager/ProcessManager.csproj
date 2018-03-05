@@ -3,6 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <RootNamespace>Linux</RootNamespace>
+    <AssemblyName>Linux.ProcessManager</AssemblyName>  
     <Version>0.0.1-alpha</Version>
     <VersionSufix>prerelease</VersionSufix>
     <Authors>Alexander Chermyanin</Authors>
