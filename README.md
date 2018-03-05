@@ -1,6 +1,6 @@
 # Linux.ProcessManager
 
-[![Build Status](https://travis-ci.org/flamencist/ProcessManager.svg?branch=master)](https://travis-ci.org/flamencist/ProcessManager)
+[![Build Status](https://travis-ci.org/flamencist/Linux.ProcessManager.svg?branch=master)](https://travis-ci.org/flamencist/Linux.ProcessManager)
 [![NuGet](https://img.shields.io/nuget/v/Linux.ProcessManager.svg)](https://www.nuget.org/packages/Linux.ProcessManager/)
 
 Process manager for linux. It's can retrieved processes with user\group owners.
