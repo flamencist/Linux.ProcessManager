@@ -1,0 +1,17 @@
+language: csharp
+mono: none
+dotnet: 2.1.4
+dist: trusty
+install:
+  - dotnet restore
+script:
+  - dotnet build -c Release ProcessManager.sln
+  - dotnet test ./ProcessManager.Tests/
+  - dotnet pack
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: dotnet nuget push ./ProcessManager/bin/Release/ProcessManager*.nupkg -k $NUGET_API_KEY -s $NUGET_SOURCE
+  on:
+    tags: true
+    all_branches: true
