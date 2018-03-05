@@ -10,9 +10,8 @@ namespace ProcessManager.Tests
         {
             var actual = Linux.ProcessManager.GetProcessInfos();
             Assert.NotEmpty(actual);
-            var initProcess = actual.FirstOrDefault(_ => _.ProcessName == "systemd");
+            var initProcess = actual.FirstOrDefault(_ => _.ProcessId == 1);
             Assert.NotNull(initProcess);
-            Assert.Equal("systemd",initProcess.ProcessName);
             Assert.Equal(1, initProcess.ProcessId);
             Assert.Equal(0, initProcess.Ruid);
             Assert.Equal(0, initProcess.Euid);
