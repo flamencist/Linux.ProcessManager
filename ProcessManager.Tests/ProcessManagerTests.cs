@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Linux;
 using Xunit;
 
 namespace ProcessManager.Tests
@@ -17,6 +18,19 @@ namespace ProcessManager.Tests
             Assert.Equal(0, initProcess.Euid);
             Assert.Equal(0, initProcess.Rgid);
             Assert.Equal(0, initProcess.Egid);
+        }
+        
+        [Fact]
+        public void ProcessManager_GetProcessInfos_Should_Return_ProcessPath_If_Allowed()
+        {
+            var actual = Linux.ProcessManager.GetProcessInfos();
+            Assert.NotEmpty(actual);
+            var uid = Syscall.GetEffectiveUserId();
+            var userProcess = actual.FirstOrDefault(_ => _.Euid == uid);
+            Assert.NotNull(userProcess);
+            Assert.Equal(uid, userProcess.Ruid);
+            Assert.Equal(uid, userProcess.Euid);
+            Assert.NotEmpty(userProcess.ProcessPath);
         }
         
         [Fact]

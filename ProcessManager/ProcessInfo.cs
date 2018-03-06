@@ -13,16 +13,17 @@
             Rgid = -1;
         }
 
-        public string ProcessName { get; set; }
+        public string ProcessName { get; internal set; }
 
-        public int ProcessId { get; set; }
-        public int ParentProcessId { get; set; }
-        public char State { get; set; }
+        public int ProcessId { get; internal set; }
+        public int ParentProcessId { get; internal set; }
+        public char State { get; internal set; }
 
-        public int Euid { get; set; }       
-        public int Ruid { get; set; }       
+        public int Euid { get; internal set; }       
+        public int Ruid { get; internal set; }       
         
-        public int Egid { get; set; }       
-        public int Rgid { get; set; } 
+        public int Egid { get; internal set; }       
+        public int Rgid { get; internal set; } 
+        public string ProcessPath { get; internal set; } 
     }
 }

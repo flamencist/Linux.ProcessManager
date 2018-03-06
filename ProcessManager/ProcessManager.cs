@@ -43,10 +43,12 @@ namespace Linux
                 reusableReader = new ReusableTextReader();
             if (!ProcFs.TryReadStatusFile(pid, out var result, reusableReader))
                 return null;
-            return CreateProcessInfo(result);
+            ProcFs.TryReadExeFile(pid, out var exe);
+
+            return CreateProcessInfo(result, exe);
         }
 
-        private static ProcessInfo CreateProcessInfo(ProcFs.ParsedStatus procFsStatus)
+        private static ProcessInfo CreateProcessInfo(ProcFs.ParsedStatus procFsStatus, string exe)
         {
             var processInfo = new ProcessInfo
             {
@@ -58,6 +60,7 @@ namespace Linux
                 Euid = procFsStatus.Euid,
                 Egid = procFsStatus.Egid,
                 Rgid = procFsStatus.Rgid,
+                ProcessPath = exe
             };
             return processInfo;
         }

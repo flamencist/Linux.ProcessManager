@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Linux
 {
@@ -16,6 +17,29 @@ namespace Linux
         private static string GetStatusFilePathForProcess(int pid)
         {
             return RootPath + pid.ToString(CultureInfo.InvariantCulture) + StatusFileName;
+        }
+        
+        private static string GetExeFilePathForProcess(int pid)
+        {
+            return RootPath + pid.ToString(CultureInfo.InvariantCulture) + ExeFileName;
+        }
+
+        internal static bool TryReadExeFile(int pid, out string exe)
+        {
+            var path = GetExeFilePathForProcess(pid);      
+            const int bufferSize = 2048;
+            exe = null;
+
+            var numArray = new byte[bufferSize + 1];
+            var count = Syscall.ReadLink(path, numArray, bufferSize);
+            if (count > 0)
+            {
+                numArray[count] = (byte) 0;
+                exe = Encoding.UTF8.GetString(numArray, 0, count);
+                return true;
+            }
+            Trace.WriteLine(Syscall.GetLastError());
+            return false;
         }
 
         internal static bool TryReadStatusFile(int pid, out ParsedStatus result, ReusableTextReader reusableReader)
