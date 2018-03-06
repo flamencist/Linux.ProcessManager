@@ -11,13 +11,19 @@ Sample usage
 
 var processInfos = ProcessManager.GetProcessInfos();
 
-var initProcess = actual.FirstOrDefault(_ => _.ProcessName == "systemd"); 
-Console.WriteLine($"Name: {initProcess.Name}, ProcessId: {initProcess.Pid}, Real user id: {initProcess.Ruid}, Effective user id: {initProcess.Euid} ");
+            var processInfos = ProcessManager.GetProcessInfos();
+
+            var initProcess = actual.FirstOrDefault(_ => _.ProcessName == "systemd"); 
+            Console.WriteLine($"Name: {initProcess.ProcessName}, " +
+                              $"ProcessId: {initProcess.ProcessId}, " +
+                              $"Real user id: {initProcess.Ruid}, " +
+                              $"Effective user id: {initProcess.Euid} " +
+                              $"Process path (exe): {initProcess.ProcessPath}");
 
 ```
 
 ```
-Name: systemd, ProcessId: 1, Real user id: 0, Effective user id: 0
+Name: systemd, ProcessId: 1, Real user id: 0, Effective user id: 0, Process path (exe): /lib/systemd/systemd
 ```
 
 
