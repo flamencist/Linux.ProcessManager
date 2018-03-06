@@ -20,7 +20,7 @@ var processInfos = ProcessManager.GetProcessInfos();
                               $"Effective user id: {initProcess.Euid}, " +
                               $"User name: {initProcess.UserName}, " +
                               $"Start time: {initProcess.StartTime}, " +
-                              $"Process path (exe): {initProcess.ProcessPath}");
+                              $"Process path (exe): {initProcess.ExecutablePath}");
 
 ```
 
