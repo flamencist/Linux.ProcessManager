@@ -14,6 +14,11 @@ namespace Linux
         private const string ExeFileName = "/exe";
         private const string StatusFileName = "/status";
 
+        private static string GetRootPathForProcess(int pid)
+        {
+            return RootPath + pid.ToString(CultureInfo.InvariantCulture);
+        }
+        
         private static string GetStatusFilePathForProcess(int pid)
         {
             return RootPath + pid.ToString(CultureInfo.InvariantCulture) + StatusFileName;
@@ -40,6 +45,21 @@ namespace Linux
             }
             Trace.WriteLine(Syscall.GetLastError());
             return false;
+        }
+
+        internal static bool TryReadCreationTime(int pid, out DateTime dateTime)
+        {
+            try
+            {
+                dateTime = File.GetCreationTimeUtc(GetRootPathForProcess(pid));
+                return true;
+            }
+            catch (Exception e)
+            {
+                dateTime = default(DateTime);
+                Trace.WriteLine(e);
+                return false;
+            }
         }
 
         internal static bool TryReadStatusFile(int pid, out ParsedStatus result, ReusableTextReader reusableReader)

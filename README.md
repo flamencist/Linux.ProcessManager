@@ -17,13 +17,15 @@ var processInfos = ProcessManager.GetProcessInfos();
             Console.WriteLine($"Name: {initProcess.ProcessName}, " +
                               $"ProcessId: {initProcess.ProcessId}, " +
                               $"Real user id: {initProcess.Ruid}, " +
-                              $"Effective user id: {initProcess.Euid} " +
+                              $"Effective user id: {initProcess.Euid}, " +
+                              $"User name: {initProcess.UserName}, " +
+                              $"Start time: {initProcess.StartTime}, " +
                               $"Process path (exe): {initProcess.ProcessPath}");
 
 ```
 
 ```
-Name: systemd, ProcessId: 1, Real user id: 0, Effective user id: 0, Process path (exe): /lib/systemd/systemd
+Name: systemd, ProcessId: 1, Real user id: 0, Effective user id: 0, User name: root, Start time: 01.03.2018, Process path (exe): /lib/systemd/systemd
 ```
 
 

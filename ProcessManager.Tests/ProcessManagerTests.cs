@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Linux;
 using Xunit;
 
@@ -18,10 +19,12 @@ namespace ProcessManager.Tests
             Assert.Equal(0, initProcess.Euid);
             Assert.Equal(0, initProcess.Rgid);
             Assert.Equal(0, initProcess.Egid);
+            Assert.True(initProcess.StartTime > DateTime.MinValue);
+            Assert.Equal("root", initProcess.UserName);
         }
         
         [Fact]
-        public void ProcessManager_GetProcessInfos_Should_Return_ProcessPath_If_Allowed()
+        public void ProcessManager_GetProcessInfos_Should_Return_ExecutablePath_If_Allowed()
         {
             var actual = Linux.ProcessManager.GetProcessInfos();
             Assert.NotEmpty(actual);
@@ -30,7 +33,7 @@ namespace ProcessManager.Tests
             Assert.NotNull(userProcess);
             Assert.Equal(uid, userProcess.Ruid);
             Assert.Equal(uid, userProcess.Euid);
-            Assert.NotEmpty(userProcess.ProcessPath);
+            Assert.NotEmpty(userProcess.ExecutablePath);
         }
         
         [Fact]

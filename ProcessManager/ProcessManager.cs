@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -44,11 +45,11 @@ namespace Linux
             if (!ProcFs.TryReadStatusFile(pid, out var result, reusableReader))
                 return null;
             ProcFs.TryReadExeFile(pid, out var exe);
-
-            return CreateProcessInfo(result, exe);
+            ProcFs.TryReadCreationTime(pid, out var startTime);
+            return CreateProcessInfo(result, exe, startTime);
         }
 
-        private static ProcessInfo CreateProcessInfo(ProcFs.ParsedStatus procFsStatus, string exe)
+        private static ProcessInfo CreateProcessInfo(ProcFs.ParsedStatus procFsStatus, string exe, DateTime startTime)
         {
             var processInfo = new ProcessInfo
             {
@@ -60,7 +61,8 @@ namespace Linux
                 Euid = procFsStatus.Euid,
                 Egid = procFsStatus.Egid,
                 Rgid = procFsStatus.Rgid,
-                ProcessPath = exe
+                ExecutablePath = exe,
+                StartTime = startTime
             };
             return processInfo;
         }

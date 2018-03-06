@@ -1,4 +1,6 @@
-﻿namespace Linux
+﻿using System;
+
+namespace Linux
 {
     public sealed class ProcessInfo
     {
@@ -15,6 +17,8 @@
 
         public string ProcessName { get; internal set; }
 
+        public string UserName => Syscall.GetPasswdByUserId(Ruid).pw_name;
+
         public int ProcessId { get; internal set; }
         public int ParentProcessId { get; internal set; }
         public char State { get; internal set; }
@@ -24,6 +28,7 @@
         
         public int Egid { get; internal set; }       
         public int Rgid { get; internal set; } 
-        public string ProcessPath { get; internal set; } 
+        public string ExecutablePath { get; internal set; } 
+        public DateTime StartTime { get; internal set; }
     }
 }
