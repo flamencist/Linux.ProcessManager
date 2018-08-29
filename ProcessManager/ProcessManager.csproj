@@ -4,8 +4,7 @@
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <RootNamespace>Linux</RootNamespace>
     <AssemblyName>Linux.ProcessManager</AssemblyName>
-    <Version>0.0.3-alpha</Version>
-    <VersionSufix>prerelease</VersionSufix>
+    <Version>1.0.0</Version>
     <Authors>Alexander Chermyanin</Authors>
     <Company>flamencist</Company>
     <Description>Linux processes manager.</Description>
@@ -13,6 +12,6 @@
     <PackageLicenseUrl>https://github.com/flamencist/Linux.ProcessManager</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/flamencist/Linux.ProcessManager</PackageProjectUrl>
     <RepositoryUrl>https://github.com/flamencist/Linux.ProcessManager</RepositoryUrl>
-    <PackageReleaseNotes>Added start time, user name</PackageReleaseNotes>
+    <PackageReleaseNotes>released stable version</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
