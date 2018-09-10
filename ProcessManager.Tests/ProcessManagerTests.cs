@@ -55,7 +55,7 @@ namespace ProcessManager.Tests
         {
             var pid = 1;
             var actual = Linux.ProcessManager.GetCmdLine(pid);
-            Assert.Equal(2,actual.Count);
+            Assert.True(actual.Count > 1, $"Actual: {string.Join("\n",actual)}");
         }
     }
 }
