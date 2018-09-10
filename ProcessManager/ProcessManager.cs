@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Linux
 {
@@ -36,6 +37,13 @@ namespace Linux
             }
 
             return processInfoList.ToArray();
+        }
+
+        public static List<string> GetCmdLine(int pid)
+        {
+            var specificDelimiterReader = new SpecificDelimiterTextReader(Encoding.Default);
+            ProcFs.TryReadCommandLine(pid, out var cmdLine, specificDelimiterReader);
+            return cmdLine;
         }
 
         private static ProcessInfo CreateProcessInfo(int pid, ReusableTextReader reusableReader = null)

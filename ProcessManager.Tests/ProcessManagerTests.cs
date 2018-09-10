@@ -49,5 +49,13 @@ namespace ProcessManager.Tests
             var actual = Linux.ProcessManager.GetProcessIds();
             Assert.Contains(1,actual);
         }
+        
+        [Fact]
+        public void ProcessManager_GetCmdLine_Should_Return_List_Of_Commands()
+        {
+            var pid = 1;
+            var actual = Linux.ProcessManager.GetCmdLine(pid);
+            Assert.Equal(2,actual.Count);
+        }
     }
 }

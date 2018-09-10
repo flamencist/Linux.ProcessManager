@@ -12,6 +12,7 @@ namespace Linux
     {
         private const string RootPath = "/proc/";
         private const string ExeFileName = "/exe";
+        private const string CmdLineFileName = "/cmdline";
         private const string StatusFileName = "/status";
 
         private static string GetRootPathForProcess(int pid)
@@ -27,6 +28,11 @@ namespace Linux
         private static string GetExeFilePathForProcess(int pid)
         {
             return RootPath + pid.ToString(CultureInfo.InvariantCulture) + ExeFileName;
+        }
+        
+        private static string GetCmdLineFilePathForProcess(int pid)
+        {
+            return RootPath + pid.ToString(CultureInfo.InvariantCulture) + CmdLineFileName;
         }
 
         internal static bool TryReadExeFile(int pid, out string exe)
@@ -57,6 +63,25 @@ namespace Linux
             catch (Exception e)
             {
                 dateTime = default(DateTime);
+                Trace.WriteLine(e);
+                return false;
+            }
+        }
+
+        internal static bool TryReadCommandLine(int pid, out List<string> cmdLine, SpecificDelimiterTextReader delimiterTextReader)
+        {
+            try
+            {
+                using (var source = new FileStream(GetCmdLineFilePathForProcess(pid), FileMode.Open, FileAccess.Read, FileShare.Read,
+                    1, false))
+                {
+                    cmdLine = delimiterTextReader.ReadLines(source).ToList();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                cmdLine = default(List<string>);
                 Trace.WriteLine(e);
                 return false;
             }
