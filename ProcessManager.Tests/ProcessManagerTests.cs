@@ -55,7 +55,8 @@ namespace ProcessManager.Tests
         {
             var pid = 1;
             var actual = Linux.ProcessManager.GetCmdLine(pid);
-            Assert.True(actual.Count > 1, $"Actual: {string.Join("\n",actual)}");
+            Assert.True(actual.Count >= 1, $"Actual: {string.Join("\n",actual)}");
+            Assert.Equal("/sbin/init", actual[0]);
         }
     }
 }
