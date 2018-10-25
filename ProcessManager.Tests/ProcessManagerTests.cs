@@ -24,6 +24,41 @@ namespace ProcessManager.Tests
         }
         
         [Fact]
+        public void ProcessManager_GetProcessInfos_Should_Return_All_Processes_Info_With_Specific_Ids()
+        {
+            var initProcess = Linux.ProcessManager.GetProcessInfos(new []{1}).FirstOrDefault();
+            Assert.NotNull(initProcess);
+            Assert.Equal(1, initProcess.ProcessId);
+            Assert.Equal(0, initProcess.Ruid);
+            Assert.Equal(0, initProcess.Euid);
+            Assert.Equal(0, initProcess.Rgid);
+            Assert.Equal(0, initProcess.Egid);
+            Assert.True(initProcess.StartTime > DateTime.MinValue);
+            Assert.Equal("root", initProcess.UserName);
+        }
+
+        [Fact]
+        public void ProcessManager_GetProcessInfo_Should_Return_Process_Info()
+        {
+            var initProcess = Linux.ProcessManager.GetProcessInfo(1);
+            Assert.NotNull(initProcess);
+            Assert.Equal(1, initProcess.ProcessId);
+            Assert.Equal(0, initProcess.Ruid);
+            Assert.Equal(0, initProcess.Euid);
+            Assert.Equal(0, initProcess.Rgid);
+            Assert.Equal(0, initProcess.Egid);
+            Assert.True(initProcess.StartTime > DateTime.MinValue);
+            Assert.Equal("root", initProcess.UserName);
+        }
+        
+        [Fact]
+        public void ProcessManager_GetProcessInfo_Should_Return_Null_Process_Not_Found()
+        {
+            var initProcess = Linux.ProcessManager.GetProcessInfo(-1);
+            Assert.Null(initProcess);
+        }
+        
+        [Fact]
         public void ProcessManager_GetProcessInfos_Should_Return_ExecutablePath_If_Allowed()
         {
             var actual = Linux.ProcessManager.GetProcessInfos();

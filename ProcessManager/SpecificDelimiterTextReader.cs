@@ -11,7 +11,7 @@ namespace Linux
         private readonly StringBuilder _builder = new StringBuilder();
         private readonly byte[] _bytes;
 
-        public SpecificDelimiterTextReader(Encoding encoding = null, int bufferSize = 1024, char delimiter = '\0')
+        public SpecificDelimiterTextReader(int bufferSize = 1024, char delimiter = '\0')
         {
             _delimiter = delimiter;
             _bytes = new byte[bufferSize];
@@ -36,6 +36,12 @@ namespace Linux
                         _builder.Clear();
                     }
                 }
+            }
+
+            if (_builder.Length > 0)
+            {
+                yield return _builder.ToString();
+                _builder.Clear();
             }
         }
     }

@@ -49,7 +49,7 @@ namespace Linux
                 exe = Encoding.UTF8.GetString(numArray, 0, count);
                 return true;
             }
-            Trace.WriteLine(Syscall.GetLastError());
+            Debug.WriteLine(Syscall.GetLastError());
             return false;
         }
 
@@ -63,7 +63,7 @@ namespace Linux
             catch (Exception e)
             {
                 dateTime = default(DateTime);
-                Trace.WriteLine(e);
+                Debug.WriteLine(e);
                 return false;
             }
         }
@@ -82,7 +82,7 @@ namespace Linux
             catch (Exception e)
             {
                 cmdLine = default(List<string>);
-                Trace.WriteLine(e);
+                Debug.WriteLine(e);
                 return false;
             }
         }

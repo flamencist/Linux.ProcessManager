@@ -27,6 +27,16 @@ namespace Linux
         public static ProcessInfo[] GetProcessInfos()
         {
             var processIds = GetProcessIds();
+            return GetProcessInfos(processIds);
+        }
+        
+        public static ProcessInfo GetProcessInfo(int pid)
+        {
+            return GetProcessInfos(new[] {pid}).FirstOrDefault();
+        }
+
+        public static ProcessInfo[] GetProcessInfos(int[] processIds)
+        {
             var reusableReader = new ReusableTextReader();
             var processInfoList = new List<ProcessInfo>(processIds.Length);
             foreach (var pid in processIds)
@@ -41,7 +51,7 @@ namespace Linux
 
         public static List<string> GetCmdLine(int pid)
         {
-            var specificDelimiterReader = new SpecificDelimiterTextReader(Encoding.Default);
+            var specificDelimiterReader = new SpecificDelimiterTextReader();
             ProcFs.TryReadCommandLine(pid, out var cmdLine, specificDelimiterReader);
             return cmdLine;
         }
