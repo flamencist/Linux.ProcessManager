@@ -2,11 +2,18 @@
 using System.Linq;
 using Linux;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace ProcessManager.Tests
 {
     public class ProcessManagerTests
     {
+        private readonly ITestOutputHelper _testOutput;
+
+        public ProcessManagerTests(ITestOutputHelper testOutput)
+        {
+            _testOutput = testOutput;
+        }
         [Fact]
         public void ProcessManager_GetProcessInfos_Should_Return_All_Processes_Info()
         {
@@ -66,6 +73,7 @@ namespace ProcessManager.Tests
             var uid = Syscall.GetEffectiveUserId();
             var userProcess = actual.FirstOrDefault(_ => _.Euid == uid);
             Assert.NotNull(userProcess);
+            _testOutput.WriteLine($"{userProcess.ProcessName}:{userProcess.ProcessId}. Exe: {userProcess.ExecutablePath}");
             Assert.Equal(uid, userProcess.Ruid);
             Assert.Equal(uid, userProcess.Euid);
             Assert.NotEmpty(userProcess.ExecutablePath);
