@@ -12,6 +12,6 @@
     <PackageLicenseUrl>https://github.com/flamencist/Linux.ProcessManager/blob/master/license.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/flamencist/Linux.ProcessManager</PackageProjectUrl>
     <RepositoryUrl>https://github.com/flamencist/Linux.ProcessManager</RepositoryUrl>
-    <PackageReleaseNotes>add GetProcessInfo method for single pid</PackageReleaseNotes>
+    <PackageReleaseNotes>add GetProcessInfoByPid method for single pid</PackageReleaseNotes>
   </PropertyGroup>
 </Project>

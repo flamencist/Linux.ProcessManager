@@ -40,7 +40,7 @@ namespace ProcessManager.Tests
         [Fact]
         public void ProcessManager_GetProcessInfo_Should_Return_Process_Info()
         {
-            var initProcess = Linux.ProcessManager.GetProcessInfo(1);
+            var initProcess = Linux.ProcessManager.GetProcessInfoByPid(1);
             Assert.NotNull(initProcess);
             Assert.Equal(1, initProcess.ProcessId);
             Assert.Equal(0, initProcess.Ruid);
@@ -54,7 +54,7 @@ namespace ProcessManager.Tests
         [Fact]
         public void ProcessManager_GetProcessInfo_Should_Return_Null_Process_Not_Found()
         {
-            var initProcess = Linux.ProcessManager.GetProcessInfo(-1);
+            var initProcess = Linux.ProcessManager.GetProcessInfoByPid(-1);
             Assert.Null(initProcess);
         }
         

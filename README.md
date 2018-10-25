@@ -34,6 +34,18 @@ Name: systemd, ProcessId: 1, Real user id: 0, Effective user id: 0, User name: r
 ProcessInfo[] processInfos = ProcessManager.GetProcessInfos();
 ```
 
+### GetProcessInfos ()for processes ids)
+
+```c#
+ProcessInfo[] processInfos = ProcessManager.GetProcessInfos(new []{1,2,3});
+```
+
+### GetProcessInfoByPid
+
+```c#
+ProcessInfo[] processInfos = ProcessManager.GetProcessInfoByPid(1);
+```
+
 ### GetProcessIds
 
 ```c#
