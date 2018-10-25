@@ -30,7 +30,7 @@ namespace Linux
             return GetProcessInfos(processIds);
         }
         
-        public static ProcessInfo GetProcessInfoByPid(int pid)
+        public static ProcessInfo GetProcessInfoById(int pid)
         {
             return GetProcessInfos(new[] {pid}).FirstOrDefault();
         }

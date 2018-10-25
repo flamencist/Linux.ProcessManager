@@ -40,10 +40,10 @@ ProcessInfo[] processInfos = ProcessManager.GetProcessInfos();
 ProcessInfo[] processInfos = ProcessManager.GetProcessInfos(new []{1,2,3});
 ```
 
-### GetProcessInfoByPid
+### GetProcessInfoById
 
 ```c#
-ProcessInfo[] processInfos = ProcessManager.GetProcessInfoByPid(1);
+ProcessInfo[] processInfos = ProcessManager.GetProcessInfoById(1);
 ```
 
 ### GetProcessIds
