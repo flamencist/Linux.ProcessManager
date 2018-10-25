@@ -73,7 +73,7 @@ namespace ProcessManager.Tests
             var uid = Syscall.GetEffectiveUserId();
             var userProcess = actual.FirstOrDefault(_ => _.Euid == uid);
             Assert.NotNull(userProcess);
-            _testOutput.WriteLine($"{userProcess.ProcessName}:{userProcess.ProcessId}. Exe: {userProcess.ExecutablePath}");
+            _testOutput.WriteLine($"{userProcess.ProcessName}:{userProcess.ProcessId}. Exe: {userProcess.ExecutablePath}. Uid: {userProcess.Euid}");
             Assert.Equal(uid, userProcess.Ruid);
             Assert.Equal(uid, userProcess.Euid);
             Assert.NotEmpty(userProcess.ExecutablePath);
