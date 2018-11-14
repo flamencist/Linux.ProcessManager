@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -30,23 +30,19 @@ namespace Linux
             return GetProcessInfos(processIds);
         }
         
+        public static ProcessInfo[] GetProcessInfos(Func<ProcessInfo,bool> predicate)
+        {
+            return GetProcessInfos(EnumerateProcessIds(), predicate);
+        }
+        
         public static ProcessInfo GetProcessInfoById(int pid)
         {
-            return GetProcessInfos(new[] {pid}).FirstOrDefault();
+            return GetProcessInfos(new[] {pid},(info)=>true).FirstOrDefault();
         }
 
         public static ProcessInfo[] GetProcessInfos(int[] processIds)
         {
-            var reusableReader = new ReusableTextReader();
-            var processInfoList = new List<ProcessInfo>(processIds.Length);
-            foreach (var pid in processIds)
-            {
-                var processInfo = CreateProcessInfo(pid, reusableReader);
-                if (processInfo != null)
-                    processInfoList.Add(processInfo);
-            }
-
-            return processInfoList.ToArray();
+            return GetProcessInfos(processIds,(info)=>true);
         }
 
         public static List<string> GetCmdLine(int pid)
@@ -54,6 +50,15 @@ namespace Linux
             var specificDelimiterReader = new SpecificDelimiterTextReader();
             ProcFs.TryReadCommandLine(pid, out var cmdLine, specificDelimiterReader);
             return cmdLine;
+        }
+
+        public static ProcessInfo[] GetProcessInfos(IEnumerable<int> processIds, Func<ProcessInfo,bool> predicate)
+        {
+            var reusableReader = new ReusableTextReader();
+            var processInfoList = new List<ProcessInfo>();
+            return processIds.Select(_=>CreateProcessInfo(_, reusableReader))
+                            .Where(_=>_ != null && predicate(_))
+                            .ToArray();
         }
 
         private static ProcessInfo CreateProcessInfo(int pid, ReusableTextReader reusableReader = null)

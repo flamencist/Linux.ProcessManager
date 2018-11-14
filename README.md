@@ -34,11 +34,24 @@ Name: systemd, ProcessId: 1, Real user id: 0, Effective user id: 0, User name: r
 ProcessInfo[] processInfos = ProcessManager.GetProcessInfos();
 ```
 
-### GetProcessInfos ()for processes ids)
+### GetProcessInfos (for processes ids)
 
 ```c#
 ProcessInfo[] processInfos = ProcessManager.GetProcessInfos(new []{1,2,3});
 ```
+
+### GetProcessInfos (with predicate)
+
+```c#
+ProcessInfo[] processInfos = ProcessManager.GetProcessInfos(_=>_.ProcessId == 1);
+```
+
+### GetProcessInfos (with predicate and id)
+
+```c#
+ProcessInfo[] processInfos = ProcessManager.GetProcessInfos(new []{1}, _=>_.ProcessName == "init");
+```
+
 
 ### GetProcessInfoById
 
