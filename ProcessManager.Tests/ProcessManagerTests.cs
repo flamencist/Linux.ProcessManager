@@ -141,7 +141,7 @@ namespace ProcessManager.Tests
         [Fact]
         public void ProcessManager_Kill_Throw_Exception_If_Not_Found_Process()
         {
-            var processId = Linux.ProcessManager.GetProcessIds().Max() + 10;
+            var processId = Linux.ProcessManager.GetProcessIds().Max() + 1000;
             var actual = Assert.Throws<Win32Exception>(() => Linux.ProcessManager.Instance.Kill(processId, 0));
             Assert.Equal("No such process", actual.Message);
             Assert.Equal(-1, actual.NativeErrorCode);
@@ -150,7 +150,7 @@ namespace ProcessManager.Tests
         [Fact]
         public void ProcessManager_TryKill_Return_False_If_Not_Found_Process()
         {
-            var processId = Linux.ProcessManager.GetProcessIds().Max() + 10;
+            var processId = Linux.ProcessManager.GetProcessIds().Max() + 1000;
             var actual = Linux.ProcessManager.Instance.TryKill(processId, 0);
             Assert.False(actual);
         }
