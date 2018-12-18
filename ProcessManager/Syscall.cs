@@ -46,6 +46,9 @@ namespace Linux
                 return new Passwd();
             }
         }
+
+        [DllImport("libc", EntryPoint = "kill", SetLastError = true)]
+        internal static extern int Kill(int pid, int sig);
         
         [DllImport("libc", EntryPoint="strerror", SetLastError = false)]
         private static extern IntPtr StrError(int errnum);
