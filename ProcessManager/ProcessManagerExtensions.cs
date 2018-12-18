@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Linux
 {
@@ -42,6 +43,11 @@ namespace Linux
             {
                 return false;
             }
+        }
+
+        public static void Kill(this IProcessManager processManager, string processName, string userName, int signal)
+        {
+            
         }
     }
 }

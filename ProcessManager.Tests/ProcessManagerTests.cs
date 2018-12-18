@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Linux;
 using Xunit;
 using Xunit.Abstractions;
@@ -157,9 +158,10 @@ namespace ProcessManager.Tests
         [Fact]
         public void ProcessManager_Kill_Send_Signal_To_Process()
         {
-            var process = Process.Start(new ProcessStartInfo("bash", "-c 'exec -a sadhadxk sleep 1000000'"));
+            var process = Process.Start(new ProcessStartInfo("bash", "-c 'exec -a sadhadxk sleep infinity'"));
             Assert.NotNull(process);
             Linux.ProcessManager.Instance.Kill(process.Id, 9);
+            Thread.Sleep(1000);
             var actual = Linux.ProcessManager.GetProcessInfoById(process.Id);
             Assert.Null(actual);
         }
