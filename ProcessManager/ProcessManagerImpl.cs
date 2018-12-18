@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 namespace Linux
 {
@@ -17,18 +18,12 @@ namespace Linux
             }
         }
         
-        public  ProcessInfo[] GetProcessInfos(int[] processIds)
+        public ProcessInfo[] GetProcessInfos(IEnumerable<int> processIds, Func<ProcessInfo,bool> predicate)
         {
             var reusableReader = new ReusableTextReader();
-            var processInfoList = new List<ProcessInfo>(processIds.Length);
-            foreach (var pid in processIds)
-            {
-                var processInfo = CreateProcessInfo(pid, reusableReader);
-                if (processInfo != null)
-                    processInfoList.Add(processInfo);
-            }
-
-            return processInfoList.ToArray();
+            return processIds.Select(_=>CreateProcessInfo(_, reusableReader))
+                .Where(_=>_ != null && predicate(_))
+                .ToArray();
         }
 
         public List<string> GetCmdLine(int pid)

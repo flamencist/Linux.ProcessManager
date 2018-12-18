@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Linux
 {
     public interface IProcessManager
     {
         IEnumerable<int> EnumerateProcessIds();
-        ProcessInfo[] GetProcessInfos(int[] processIds);
+        ProcessInfo[] GetProcessInfos(IEnumerable<int> processIds, Func<ProcessInfo, bool> predicate);
         List<string> GetCmdLine(int pid);
     }
 }

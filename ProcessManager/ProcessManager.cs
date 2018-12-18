@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Linux
 {
@@ -14,6 +15,16 @@ namespace Linux
         public static int[] GetProcessIds()
         {
             return Instance.GetProcessIds();
+        }
+        
+        public static ProcessInfo[] GetProcessInfos(Func<ProcessInfo,bool> predicate)
+        {
+            return Instance.GetProcessInfos(predicate);
+        }
+        
+        public static ProcessInfo[] GetProcessInfos(IEnumerable<int> processIds, Func<ProcessInfo,bool> predicate)
+        {
+            return Instance.GetProcessInfos(processIds, predicate);
         }
 
         public static ProcessInfo[] GetProcessInfos()

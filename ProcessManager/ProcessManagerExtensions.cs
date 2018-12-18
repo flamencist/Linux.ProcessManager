@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Linux
 {
@@ -18,6 +19,16 @@ namespace Linux
         {
             var processIds = processManager.GetProcessIds();
             return processManager.GetProcessInfos(processIds);
+        }
+        
+        public static ProcessInfo[] GetProcessInfos(this IProcessManager processManager, int[] processIds)
+        {
+            return processManager.GetProcessInfos(processIds,(info)=>true);
+        }
+        
+        public static ProcessInfo[] GetProcessInfos(this IProcessManager processManager, Func<ProcessInfo,bool> predicate)
+        {
+            return processManager.GetProcessInfos(processManager.EnumerateProcessIds(), predicate);
         }
     }
 }
