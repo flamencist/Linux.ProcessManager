@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using Linux;
 using Xunit;
@@ -14,6 +16,7 @@ namespace ProcessManager.Tests
         {
             _testOutput = testOutput;
         }
+        
         [Fact]
         public void ProcessManager_GetProcessInfos_Should_Return_All_Processes_Info()
         {
@@ -132,6 +135,33 @@ namespace ProcessManager.Tests
             var actual = Linux.ProcessManager.GetCmdLine(pid);
             Assert.True(actual.Count >= 1, $"Actual: {string.Join("\n",actual)}");
             Assert.Equal("/sbin/init", actual[0]);
+        }
+
+        [Fact]
+        public void ProcessManager_Kill_Throw_Exception_If_Not_Found_Process()
+        {
+            var processId = Linux.ProcessManager.GetProcessIds().Max() + 10;
+            var actual = Assert.Throws<Win32Exception>(() => Linux.ProcessManager.Instance.Kill(processId, 0));
+            Assert.Equal("No such process", actual.Message);
+            Assert.Equal(-1, actual.NativeErrorCode);
+        }
+        
+        [Fact]
+        public void ProcessManager_TryKill_Return_False_If_Not_Found_Process()
+        {
+            var processId = Linux.ProcessManager.GetProcessIds().Max() + 10;
+            var actual = Linux.ProcessManager.Instance.TryKill(processId, 0);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void ProcessManager_Kill_Send_Signal_To_Process()
+        {
+            var process = Process.Start(new ProcessStartInfo("bash", "-c 'exec -a sadhadxk sleep 1000000'"));
+            Assert.NotNull(process);
+            Linux.ProcessManager.Instance.Kill(process.Id, 9);
+            var actual = Linux.ProcessManager.GetProcessInfoById(process.Id);
+            Assert.Null(actual);
         }
     }
 }

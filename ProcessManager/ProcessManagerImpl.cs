@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -35,7 +36,11 @@ namespace Linux
 
         public void Kill(int pid, int signal)
         {
-            
+            var result = Syscall.Kill(pid, signal);
+            if (result != 0)
+            {
+                throw new Win32Exception(result, Syscall.GetLastError());
+            }
         }
 
         private static ProcessInfo CreateProcessInfo(int pid, ReusableTextReader reusableReader = null)

@@ -8,5 +8,6 @@ namespace Linux
         IEnumerable<int> EnumerateProcessIds();
         ProcessInfo[] GetProcessInfos(IEnumerable<int> processIds, Func<ProcessInfo, bool> predicate);
         List<string> GetCmdLine(int pid);
+        void Kill(int pid, int signal);
     }
 }

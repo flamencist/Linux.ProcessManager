@@ -30,5 +30,18 @@ namespace Linux
         {
             return processManager.GetProcessInfos(processManager.EnumerateProcessIds(), predicate);
         }
+
+        public static bool TryKill(this IProcessManager processManager, int pid, int signal)
+        {
+            try
+            {
+                processManager.Kill(pid, signal);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }
