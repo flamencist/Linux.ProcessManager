@@ -23,12 +23,12 @@ namespace Linux
         public int ParentProcessId { get; internal set; }
         public char State { get; internal set; }
 
-        public int Euid { get; internal set; }       
-        public int Ruid { get; internal set; }       
-        
-        public int Egid { get; internal set; }       
-        public int Rgid { get; internal set; } 
-        public string ExecutablePath { get; internal set; } 
+        public int Euid { get; internal set; }
+        public int Ruid { get; internal set; }
+
+        public int Egid { get; internal set; }
+        public int Rgid { get; internal set; }
+        public string ExecutablePath { get; internal set; }
         public DateTime StartTime { get; internal set; }
     }
 }

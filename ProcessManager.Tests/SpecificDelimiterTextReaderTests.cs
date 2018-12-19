@@ -16,13 +16,13 @@ namespace ProcessManager.Tests
             using (var memoryStream = new MemoryStream(buffer))
             {
                 var actual = new SpecificDelimiterTextReader().ReadLines(memoryStream).ToList();
-                Assert.Equal(3,actual.Count);
-                Assert.Equal("line1",actual[0]);
-                Assert.Equal("line2",actual[1]);
-                Assert.Equal("line3",actual[2]);
+                Assert.Equal(3, actual.Count);
+                Assert.Equal("line1", actual[0]);
+                Assert.Equal("line2", actual[1]);
+                Assert.Equal("line3", actual[2]);
             }
         }
-        
+
         [Fact]
         public void SpecificDelimiterTextReader_ReadLines_Split_By_Specified_Character()
         {
@@ -30,14 +30,14 @@ namespace ProcessManager.Tests
             var buffer = Encoding.UTF8.GetBytes(data);
             using (var memoryStream = new MemoryStream(buffer))
             {
-                var actual = new SpecificDelimiterTextReader(1024,'\n').ReadLines(memoryStream).ToList();
-                Assert.Equal(3,actual.Count);
-                Assert.Equal("line1",actual[0]);
-                Assert.Equal("line2",actual[1]);
-                Assert.Equal("line3",actual[2]);
+                var actual = new SpecificDelimiterTextReader(1024, '\n').ReadLines(memoryStream).ToList();
+                Assert.Equal(3, actual.Count);
+                Assert.Equal("line1", actual[0]);
+                Assert.Equal("line2", actual[1]);
+                Assert.Equal("line3", actual[2]);
             }
         }
-        
+
         [Fact]
         public void SpecificDelimiterTextReader_ReadLines_Empty_If_Lines_Not_Found()
         {

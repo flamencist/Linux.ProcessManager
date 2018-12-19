@@ -6,7 +6,7 @@ namespace Linux
     public static class ProcessManager
     {
         public static IProcessManager Instance { get; } = new ProcessManagerImpl();
-        
+
         public static IEnumerable<int> EnumerateProcessIds()
         {
             return Instance.EnumerateProcessIds();
@@ -16,13 +16,13 @@ namespace Linux
         {
             return Instance.GetProcessIds();
         }
-        
-        public static ProcessInfo[] GetProcessInfos(Func<ProcessInfo,bool> predicate)
+
+        public static ProcessInfo[] GetProcessInfos(Func<ProcessInfo, bool> predicate)
         {
             return Instance.GetProcessInfos(predicate);
         }
-        
-        public static ProcessInfo[] GetProcessInfos(IEnumerable<int> processIds, Func<ProcessInfo,bool> predicate)
+
+        public static ProcessInfo[] GetProcessInfos(IEnumerable<int> processIds, Func<ProcessInfo, bool> predicate)
         {
             return Instance.GetProcessInfos(processIds, predicate);
         }
@@ -31,7 +31,7 @@ namespace Linux
         {
             return Instance.GetProcessInfos();
         }
-        
+
         public static ProcessInfo GetProcessInfoById(int pid)
         {
             return Instance.GetProcessInfoById(pid);

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Linux;
+using ProcessManager.Tests.TestUtils;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -142,7 +143,7 @@ namespace ProcessManager.Tests
         public void ProcessManager_Kill_Throw_Exception_If_Not_Found_Process()
         {
             var processId = Linux.ProcessManager.GetProcessIds().Max() + 1000;
-            var actual = Assert.Throws<Win32Exception>(() => Linux.ProcessManager.Instance.Kill(processId, 0));
+            var actual = Assert.Throws<Win32Exception>(() => Linux.ProcessManager.Instance.Kill(processId, ProcessSignal.CHECK_PROCESS));
             Assert.Equal("No such process", actual.Message);
             Assert.Equal(-1, actual.NativeErrorCode);
         }
@@ -151,19 +152,84 @@ namespace ProcessManager.Tests
         public void ProcessManager_TryKill_Return_False_If_Not_Found_Process()
         {
             var processId = Linux.ProcessManager.GetProcessIds().Max() + 1000;
-            var actual = Linux.ProcessManager.Instance.TryKill(processId, 0);
+            var actual = Linux.ProcessManager.Instance.TryKill(processId, ProcessSignal.CHECK_PROCESS);
             Assert.False(actual);
         }
 
         [Fact]
         public void ProcessManager_Kill_Send_Signal_To_Process()
         {
-            var process = Process.Start(new ProcessStartInfo("bash", "-c 'exec -a sadhadxk sleep infinity'"));
+            var process = StartProcess();
             Assert.NotNull(process);
             Linux.ProcessManager.Instance.Kill(process.Id, 9);
-            Thread.Sleep(1000);
+            Waiter.Wait(()=>Linux.ProcessManager.GetProcessInfoById(process.Id)==null, TimeSpan.FromSeconds(2));
             var actual = Linux.ProcessManager.GetProcessInfoById(process.Id);
             Assert.Null(actual);
+        }
+        
+        [Fact]
+        public void ProcessManager_Kill_By_Process_Name()
+        {
+            {
+                var process = StartProcess();
+                
+                var uid = Syscall.GetEffectiveUserId();
+                Assert.NotNull(process);
+                Linux.ProcessManager.Instance.Kill("sleep", (uint)uid, ProcessSignal.SIGKILL,e=>_testOutput.WriteLine(e.Message));
+                
+                Waiter.Wait(()=>Linux.ProcessManager.GetProcessInfoById(process.Id)==null, TimeSpan.FromSeconds(2));
+                var actual = Linux.ProcessManager.GetProcessInfoById(process.Id);
+                Assert.Null(actual);
+            }
+            
+            {
+                var process = StartProcess();
+                var name = Syscall.GetPasswdByUserId(Syscall.GetEffectiveUserId()).pw_name;
+                Assert.NotNull(process);
+                Linux.ProcessManager.Instance.Kill("sleep", name, ProcessSignal.SIGKILL,e=>_testOutput.WriteLine(e.Message));
+                Waiter.Wait(()=>Linux.ProcessManager.GetProcessInfoById(process.Id)==null, TimeSpan.FromSeconds(2));
+                var actual = Linux.ProcessManager.GetProcessInfoById(process.Id);
+                Assert.Null(actual);
+            }
+            
+            {
+                var process = StartProcess();
+                Assert.NotNull(process);
+                Linux.ProcessManager.Instance.Kill(_=>_.ProcessName == "sleep", ProcessSignal.SIGKILL, e=>_testOutput.WriteLine(e.Message));
+                Waiter.Wait(()=>Linux.ProcessManager.GetProcessInfoById(process.Id)==null, TimeSpan.FromSeconds(2));
+                var actual = Linux.ProcessManager.GetProcessInfoById(process.Id);
+                Assert.Null(actual);
+            }
+        }
+
+        [Fact]
+        public void ProcessManager_Kill_By_UserName_Throw_Exception_If_Not_Found_UserName()
+        {
+            var username = Guid.NewGuid().ToString();
+            var actual = Assert.Throws<Win32Exception>(() => Linux.ProcessManager.Instance.Kill("processName", username));
+            Assert.Equal($"Not found user '{username}'",actual.Message);
+        }
+
+        private Process StartProcess()
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                    Arguments = "-c \"sleep infinity \"",
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                },
+                EnableRaisingEvents = true
+            };
+            process.Start();
+            process.StandardError.ReadLineAsync().ContinueWith(t => _testOutput.WriteLine(t.Result));
+
+            Waiter.Wait(()=>Linux.ProcessManager.GetProcessInfoById(process.Id)!=null, TimeSpan.FromSeconds(2));
+            return process;
         }
     }
 }

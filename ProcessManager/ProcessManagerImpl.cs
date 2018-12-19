@@ -9,7 +9,7 @@ namespace Linux
 {
     internal class ProcessManagerImpl : IProcessManager
     {
-        public  IEnumerable<int> EnumerateProcessIds()
+        public IEnumerable<int> EnumerateProcessIds()
         {
             foreach (var enumerateDirectory in Directory.EnumerateDirectories("/proc/"))
             {
@@ -18,12 +18,12 @@ namespace Linux
                     yield return result;
             }
         }
-        
-        public ProcessInfo[] GetProcessInfos(IEnumerable<int> processIds, Func<ProcessInfo,bool> predicate)
+
+        public ProcessInfo[] GetProcessInfos(IEnumerable<int> processIds, Func<ProcessInfo, bool> predicate)
         {
             var reusableReader = new ReusableTextReader();
-            return processIds.Select(_=>CreateProcessInfo(_, reusableReader))
-                .Where(_=>_ != null && predicate(_))
+            return processIds.Select(_ => CreateProcessInfo(_, reusableReader))
+                .Where(_ => _ != null && predicate(_))
                 .ToArray();
         }
 

@@ -83,4 +83,42 @@ Console.WriteLine(initProcessCmdLines[0]);
 /sbin/init
 ```
 
+### Kill (by pid)
+```c#
+var pid = 1000;
+var signal = 9;//SIGKILL
+ProcessManager.Instance.Kill(processId, signal);
+
+ProcessManager.Instance.Kill(processId, ProcessSignal.SIGKILL);
+
+```
+
+### TryKill
+```c#
+var pid = 1000000; // not existing process
+var result = ProcessManager.Instance.TryKill(processId, ProcessSignal.SIGKILL);
+Console.WriteLine(result);
+
+```
+
+```
+False
+```
+
+### Kill (by process name)
+```c#
+ProcessManager.Instance.Kill("some_process", "username", ProcessSignal.SIGKILL, (ex)=>Console.WriteLine(ex.Message));
+ProcessManager.Instance.Kill("some_process", "username"); // signal SIGTERM
+ProcessManager.Instance.Kill("some_process", 1001/*user id*/, ProcessSignal.SIGKILL, (ex)=>Console.WriteLine(ex.Message));
+ProcessManager.Instance.Kill("some_process", 1001/*user id*/);// signal SIGTERM
+
+```
+
+### Kill (by predicate)
+```c#
+ProcessManager.Instance.Kill((processInfo)=>processInfo.ProcessName == "some_process", ProcessSignal.SIGKILL, (ex)=>Console.WriteLine(ex.Message));
+ProcessManager.Instance.Kill((processInfo)=>processInfo.ProcessName == "some_process");// signal SIGTERM
+
+```
+
 Contributions and bugs reports are welcome.

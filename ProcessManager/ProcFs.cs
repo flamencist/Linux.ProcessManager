@@ -19,17 +19,17 @@ namespace Linux
         {
             return RootPath + pid.ToString(CultureInfo.InvariantCulture);
         }
-        
+
         private static string GetStatusFilePathForProcess(int pid)
         {
             return RootPath + pid.ToString(CultureInfo.InvariantCulture) + StatusFileName;
         }
-        
+
         private static string GetExeFilePathForProcess(int pid)
         {
             return RootPath + pid.ToString(CultureInfo.InvariantCulture) + ExeFileName;
         }
-        
+
         private static string GetCmdLineFilePathForProcess(int pid)
         {
             return RootPath + pid.ToString(CultureInfo.InvariantCulture) + CmdLineFileName;
@@ -37,7 +37,7 @@ namespace Linux
 
         internal static bool TryReadExeFile(int pid, out string exe)
         {
-            var path = GetExeFilePathForProcess(pid);      
+            var path = GetExeFilePathForProcess(pid);
             const int bufferSize = 2048;
             exe = null;
 
@@ -49,6 +49,7 @@ namespace Linux
                 exe = Encoding.UTF8.GetString(numArray, 0, count);
                 return true;
             }
+
             Debug.WriteLine(Syscall.GetLastError());
             return false;
         }
@@ -68,15 +69,18 @@ namespace Linux
             }
         }
 
-        internal static bool TryReadCommandLine(int pid, out List<string> cmdLine, SpecificDelimiterTextReader delimiterTextReader)
+        internal static bool TryReadCommandLine(int pid, out List<string> cmdLine,
+            SpecificDelimiterTextReader delimiterTextReader)
         {
             try
             {
-                using (var source = new FileStream(GetCmdLineFilePathForProcess(pid), FileMode.Open, FileAccess.Read, FileShare.Read,
+                using (var source = new FileStream(GetCmdLineFilePathForProcess(pid), FileMode.Open, FileAccess.Read,
+                    FileShare.Read,
                     1, false))
                 {
                     cmdLine = delimiterTextReader.ReadLines(source).ToList();
                 }
+
                 return true;
             }
             catch (Exception e)
@@ -116,7 +120,7 @@ namespace Linux
             }
 
             var results = default(ParsedStatus);
-            var dict = statusFileContents.Split(new []{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
+            var dict = statusFileContents.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(ToKeyValue)
                 .ToDictionary(_ => _.Key, _ => _.Value.Trim(' ', '\t'));
             results.StatusContents = dict;
