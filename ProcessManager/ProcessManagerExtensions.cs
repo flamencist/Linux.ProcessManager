@@ -107,8 +107,13 @@ namespace Linux
         
         public static string GetEnvironmentVariable(this IProcessManager processManager, int pid, string name)
         {
-            return processManager.GetEnvironmentVariables(pid, _=>name.Equals(_.Key, StringComparison.OrdinalIgnoreCase))
-                .First().Value;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            var found = processManager.GetEnvironmentVariables(pid,
+                _ => name.Equals(_.Key, StringComparison.OrdinalIgnoreCase));
+            return found.Any() ? found.Single().Value : string.Empty;
         }
     }
 }

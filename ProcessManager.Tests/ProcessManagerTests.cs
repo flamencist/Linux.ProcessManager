@@ -154,7 +154,7 @@ namespace ProcessManager.Tests
         public void ProcessManager_GetEnvironmentVariables_Should_Filter_By_Predicate()
         {
             var pid = Process.GetCurrentProcess().Id;
-            var actual = Linux.ProcessManager.Instance.GetEnvironmentVariables(pid,_=>"USER".Equals(_.Key,StringComparison.OrdinalIgnoreCase));
+             var actual = Linux.ProcessManager.Instance.GetEnvironmentVariables(pid,_=>"USER".Equals(_.Key,StringComparison.OrdinalIgnoreCase));
             Assert.NotNull(actual);
             Assert.Single(actual);
             _testOutput.WriteLine(string.Join(Environment.NewLine,actual.Select(_=>_.Key+":"+_.Value)));
@@ -170,6 +170,13 @@ namespace ProcessManager.Tests
             _testOutput.WriteLine(actual);
         }
 
+        [Fact]
+        public void ProcessManager_GetEnvironmentVariable_Throw_Exception_If_Variable_Null()
+        {
+            var pid = Process.GetCurrentProcess().Id;
+            Assert.Throws<ArgumentNullException>(() => Linux.ProcessManager.Instance.GetEnvironmentVariable(pid, null));
+        }
+        
         [Fact]
         public void ProcessManager_Kill_Throw_Exception_If_Not_Found_Process()
         {
