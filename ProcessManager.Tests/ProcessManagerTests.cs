@@ -146,7 +146,28 @@ namespace ProcessManager.Tests
             var actual = Linux.ProcessManager.Instance.GetEnvironmentVariables(pid);
             Assert.NotNull(actual);
             Assert.NotEmpty(actual);
+            Assert.Contains(actual, _=>"USER".Equals(_.Key,StringComparison.OrdinalIgnoreCase));
             _testOutput.WriteLine(string.Join(Environment.NewLine,actual.Select(_=>_.Key+":"+_.Value)));
+        }
+        
+        [Fact]
+        public void ProcessManager_GetEnvironmentVariables_Should_Filter_By_Predicate()
+        {
+            var pid = Process.GetCurrentProcess().Id;
+            var actual = Linux.ProcessManager.Instance.GetEnvironmentVariables(pid,_=>"USER".Equals(_.Key,StringComparison.OrdinalIgnoreCase));
+            Assert.NotNull(actual);
+            Assert.Single(actual);
+            _testOutput.WriteLine(string.Join(Environment.NewLine,actual.Select(_=>_.Key+":"+_.Value)));
+        }
+        
+        [Fact]
+        public void ProcessManager_GetEnvironmentVariable_Should_Return_Value()
+        {
+            var pid = Process.GetCurrentProcess().Id;
+            var actual = Linux.ProcessManager.Instance.GetEnvironmentVariable(pid, "USER");
+            Assert.NotNull(actual);
+            Assert.NotEmpty(actual);
+            _testOutput.WriteLine(actual);
         }
 
         [Fact]
