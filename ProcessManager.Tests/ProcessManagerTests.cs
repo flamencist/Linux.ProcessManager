@@ -138,6 +138,16 @@ namespace ProcessManager.Tests
             Assert.True(actual.Count >= 1, $"Actual: {string.Join("\n",actual)}");
             Assert.Equal("/sbin/init", actual[0]);
         }
+        
+        [Fact]
+        public void ProcessManager_GetEnvironmentVariables_Should_Return_Dictionary_Of_Variables()
+        {
+            var pid = Process.GetCurrentProcess().Id;
+            var actual = Linux.ProcessManager.Instance.GetEnvironmentVariables(pid);
+            Assert.NotNull(actual);
+            Assert.NotEmpty(actual);
+            _testOutput.WriteLine(string.Join(Environment.NewLine,actual.Select(_=>_.Key+":"+_.Value)));
+        }
 
         [Fact]
         public void ProcessManager_Kill_Throw_Exception_If_Not_Found_Process()

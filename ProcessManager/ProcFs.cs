@@ -14,6 +14,7 @@ namespace Linux
         private const string ExeFileName = "/exe";
         private const string CmdLineFileName = "/cmdline";
         private const string StatusFileName = "/status";
+        private const string EnvironFileName = "/environ";
 
         private static string GetRootPathForProcess(int pid)
         {
@@ -34,6 +35,11 @@ namespace Linux
         {
             return RootPath + pid.ToString(CultureInfo.InvariantCulture) + CmdLineFileName;
         }
+        
+        private static string GetEnvironFilePathForProcess(int pid)
+        {
+            return RootPath + pid.ToString(CultureInfo.InvariantCulture) + EnvironFileName;
+        }
 
         internal static bool TryReadExeFile(int pid, out string exe)
         {
@@ -52,6 +58,32 @@ namespace Linux
 
             Debug.WriteLine(Syscall.GetLastError());
             return false;
+        }
+        
+        internal static bool TryReadEnvironFile(int pid, out IDictionary<string,string> environ, 
+            SpecificDelimiterTextReader delimiterTextReader)
+        {
+            IEnumerable<string> environContents;
+            try
+            {
+                using (var source = new FileStream(GetEnvironFilePathForProcess(pid), FileMode.Open, FileAccess.Read,
+                    FileShare.Read,
+                    1, false))
+                {
+                    environContents = delimiterTextReader.ReadLines(source).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                environ = default(IDictionary<string,string>);
+                Debug.WriteLine(e);
+                return false;
+            }
+
+            environ = environContents
+                .Select(_ => ToKeyValue(_,'='))
+                .ToDictionary(_ => _.Key, _ => _.Value);
+            return true;
         }
 
         internal static bool TryReadCreationTime(int pid, out DateTime dateTime)
@@ -121,7 +153,7 @@ namespace Linux
 
             var results = default(ParsedStatus);
             var dict = statusFileContents.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(ToKeyValue)
+                .Select(_=>ToKeyValue(_,':'))
                 .ToDictionary(_ => _.Key, _ => _.Value.Trim(' ', '\t'));
             results.StatusContents = dict;
             results.Name = dict["Name"];
@@ -148,10 +180,10 @@ namespace Linux
             return true;
         }
 
-        private static KeyValuePair<string, string> ToKeyValue(string source)
+        private static KeyValuePair<string, string> ToKeyValue(string source, char delimiter)
         {
             var chars = source.ToCharArray();
-            var index = source.IndexOf(':');
+            var index = source.IndexOf(delimiter);
             var key = new string(chars, 0, index);
             Debug.Assert(key != null);
             var valueStartIndex = index + 1;

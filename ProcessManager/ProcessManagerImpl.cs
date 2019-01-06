@@ -34,6 +34,13 @@ namespace Linux
             return cmdLine;
         }
 
+        public IDictionary<string, string> GetEnvironmentVariables(int pid)
+        {
+            var specificDelimiterReader = new SpecificDelimiterTextReader();
+            ProcFs.TryReadEnvironFile(pid, out var environmentVariables, specificDelimiterReader);
+            return environmentVariables;
+        }
+
         public void Kill(int pid, int signal)
         {
             var result = Syscall.Kill(pid, signal);
