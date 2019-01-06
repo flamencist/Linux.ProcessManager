@@ -60,17 +60,24 @@ namespace Linux
             return false;
         }
         
-        internal static bool TryReadEnvironFile(int pid, out IDictionary<string,string> environ, 
+        internal static bool TryReadEnvironFile(int pid, out IDictionary<string,string> environ, Func<KeyValuePair<string, string>,bool> predicate,
             SpecificDelimiterTextReader delimiterTextReader)
         {
-            IEnumerable<string> environContents;
             try
             {
                 using (var source = new FileStream(GetEnvironFilePathForProcess(pid), FileMode.Open, FileAccess.Read,
                     FileShare.Read,
                     1, false))
                 {
-                    environContents = delimiterTextReader.ReadLines(source).ToList();
+                    var query = delimiterTextReader.ReadLines(source)
+                        .Select(_ => ToKeyValue(_, '='));
+                    if (predicate != null)
+                    {
+                        query = query.Where(predicate);
+                    }
+                    environ = query.ToDictionary(_ => _.Key, _ => _.Value);
+
+                    return true;
                 }
             }
             catch (Exception e)
@@ -79,11 +86,6 @@ namespace Linux
                 Debug.WriteLine(e);
                 return false;
             }
-
-            environ = environContents
-                .Select(_ => ToKeyValue(_,'='))
-                .ToDictionary(_ => _.Key, _ => _.Value);
-            return true;
         }
 
         internal static bool TryReadCreationTime(int pid, out DateTime dateTime)

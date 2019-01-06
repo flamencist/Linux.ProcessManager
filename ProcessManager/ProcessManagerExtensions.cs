@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -97,6 +98,17 @@ namespace Linux
                 })
                 ;
             
+        }
+
+        public static IDictionary<string, string> GetEnvironmentVariables(this IProcessManager processManager, int pid)
+        {
+            return processManager.GetEnvironmentVariables(pid, null);
+        }
+        
+        public static string GetEnvironmentVariable(this IProcessManager processManager, int pid, string name)
+        {
+            return processManager.GetEnvironmentVariables(pid, _=>name.Equals(_.Key, StringComparison.OrdinalIgnoreCase))
+                .First().Value;
         }
     }
 }

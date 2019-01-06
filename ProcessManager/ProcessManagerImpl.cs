@@ -34,10 +34,10 @@ namespace Linux
             return cmdLine;
         }
 
-        public IDictionary<string, string> GetEnvironmentVariables(int pid)
+        public IDictionary<string, string> GetEnvironmentVariables(int pid, Func<KeyValuePair<string,string>,bool> predicate)
         {
             var specificDelimiterReader = new SpecificDelimiterTextReader();
-            ProcFs.TryReadEnvironFile(pid, out var environmentVariables, specificDelimiterReader);
+            ProcFs.TryReadEnvironFile(pid, out var environmentVariables, predicate, specificDelimiterReader);
             return environmentVariables;
         }
 
