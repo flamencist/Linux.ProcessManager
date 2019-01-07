@@ -83,6 +83,44 @@ Console.WriteLine(initProcessCmdLines[0]);
 /sbin/init
 ```
 
+### GetEnvironmentVariables
+```c#
+var pid = 1000;
+var envVariables = ProcessManager.Instance.GetEnvironmentVariables(processId);
+Console.WriteLine(envVariables["USER"]);
+
+```
+
+```
+some_user
+```
+
+
+### GetEnvironmentVariables with predicate
+```c#
+var pid = 1000;
+var envVariables = ProcessManager.Instance.GetEnvironmentVariables(processId, _=>_.Key == "USER");
+Console.WriteLine(envVariables["USER"]);
+
+```
+
+```
+some_user
+```
+
+### GetEnvironmentVariable by name
+```c#
+var pid = 1000;
+var value = ProcessManager.Instance.GetEnvironmentVariable(processId, "USER");
+Console.WriteLine(value);
+
+```
+
+```
+some_user
+```
+
+
 ### Kill (by pid)
 ```c#
 var pid = 1000;

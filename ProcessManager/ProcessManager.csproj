@@ -4,7 +4,7 @@
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <RootNamespace>Linux</RootNamespace>
     <AssemblyName>Linux.ProcessManager</AssemblyName>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
     <Authors>Alexander Chermyanin</Authors>
     <Company>flamencist</Company>
     <Description>Linux processes manager.</Description>
@@ -12,6 +12,6 @@
     <PackageLicenseUrl>https://github.com/flamencist/Linux.ProcessManager/blob/master/license.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/flamencist/Linux.ProcessManager</PackageProjectUrl>
     <RepositoryUrl>https://github.com/flamencist/Linux.ProcessManager</RepositoryUrl>
-    <PackageReleaseNotes>add kill operation</PackageReleaseNotes>
+    <PackageReleaseNotes>add GetEnvironmentVariables methods</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
