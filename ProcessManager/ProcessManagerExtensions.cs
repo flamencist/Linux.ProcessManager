@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace Linux
 {
@@ -57,15 +56,13 @@ namespace Linux
             ProcessSignal signal = ProcessSignal.SIGTERM,
             Action<Exception> onError = null)
         {
-            var result = Syscall.getpwnam(userName);
-            if (result == IntPtr.Zero)
+            var result = Syscall.GetPasswdByUserName(userName);
+            if (string.IsNullOrWhiteSpace(result.pw_name))
             {
                 throw new Win32Exception($"Not found user '{userName}'");
             }
 
-            var uid = Marshal.PtrToStructure<Syscall.Passwd>(result).pw_uid;
-            
-            processManager.Kill(processName, uid, signal, onError);
+            processManager.Kill(processName, result.pw_uid, signal, onError);
         }
         
         public static void Kill(this IProcessManager processManager, string processName, uint uid,
