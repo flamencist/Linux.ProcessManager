@@ -161,6 +161,15 @@ namespace ProcessManager.Tests
         }
         
         [Fact]
+        public void ProcessManager_GetEnvironmentVariables_Should_Return_Empty_If_Process_Not_Found()
+        {
+            var pid = int.MaxValue;
+            var actual = Linux.ProcessManager.Instance.GetEnvironmentVariables(pid,_=>"USER".Equals(_.Key,StringComparison.OrdinalIgnoreCase));
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+        
+        [Fact]
         public void ProcessManager_GetEnvironmentVariable_Should_Return_Value()
         {
             var pid = Process.GetCurrentProcess().Id;
@@ -175,6 +184,15 @@ namespace ProcessManager.Tests
         {
             var pid = Process.GetCurrentProcess().Id;
             Assert.Throws<ArgumentNullException>(() => Linux.ProcessManager.Instance.GetEnvironmentVariable(pid, null));
+        }
+        
+        [Fact]
+        public void ProcessManager_GetEnvironmentVariable_Return_Empty_If_Process_Not_Found()
+        {
+            var pid = int.MaxValue;
+            var actual = Linux.ProcessManager.Instance.GetEnvironmentVariable(pid, "USER");
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
         }
         
         [Fact]

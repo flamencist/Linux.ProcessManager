@@ -82,7 +82,7 @@ namespace Linux
             }
             catch (Exception e)
             {
-                environ = default(IDictionary<string,string>);
+                environ = new Dictionary<string,string>();
                 Debug.WriteLine(e);
                 return false;
             }
