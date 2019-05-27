@@ -4,7 +4,7 @@
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <RootNamespace>Linux</RootNamespace>
     <AssemblyName>Linux.ProcessManager</AssemblyName>
-    <Version>1.5.2</Version>
+    <Version>1.5.3</Version>
     <Authors>Alexander Chermyanin</Authors>
     <Company>flamencist</Company>
     <Description>Linux processes manager.</Description>
@@ -12,7 +12,7 @@
     <PackageLicenseUrl>https://github.com/flamencist/Linux.ProcessManager/blob/master/license.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/flamencist/Linux.ProcessManager</PackageProjectUrl>
     <RepositoryUrl>https://github.com/flamencist/Linux.ProcessManager</RepositoryUrl>
-    <PackageReleaseNotes>fix nullref in GetEnvironmentVariable</PackageReleaseNotes>
+    <PackageReleaseNotes>fix wsl status file parsing</PackageReleaseNotes>
     <LangVersion>Latest</LangVersion>
   </PropertyGroup>
 </Project>
