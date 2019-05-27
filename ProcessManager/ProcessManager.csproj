@@ -13,5 +13,6 @@
     <PackageProjectUrl>https://github.com/flamencist/Linux.ProcessManager</PackageProjectUrl>
     <RepositoryUrl>https://github.com/flamencist/Linux.ProcessManager</RepositoryUrl>
     <PackageReleaseNotes>fix nullref in GetEnvironmentVariable</PackageReleaseNotes>
+    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
 </Project>
