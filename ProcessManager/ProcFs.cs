@@ -158,56 +158,39 @@ namespace Linux
             var dict = statusFileContents.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(_=>ToKeyValue(_,':'))
                 .ToDictionary(_ => _.Key, _ => _.Value.Trim(' ', '\t'));
-            results.StatusContents = dict;
             results.Name = dict.GetValueOrDefault("Name",string.Empty);
             results.State = dict.GetValueOrDefault("State"," ")[0];
-            results.Tgid = int.Parse(dict.GetValueOrDefault("Tgid",DefaultId));
-            results.Ngid = int.Parse(dict.GetValueOrDefault("Ngid",DefaultId));
             results.Ppid = int.Parse(dict.GetValueOrDefault("PPid", DefaultId));
             results.Pid = int.Parse(dict.GetValueOrDefault("Pid", DefaultId));
-            results.TracerPid = int.Parse(dict.GetValueOrDefault("TracerPid", DefaultId));
             
             var uids = dict.GetValueOrDefault("Uid",string.Empty).Split('\t');
-            if (uids.Length >= 4)
+            if (uids.Length >= 2)
             {
                 results.Ruid = int.Parse(uids[0]);
                 results.Euid = int.Parse(uids[1]);
-                results.Suid = int.Parse(uids[2]);
-                results.Fuid = int.Parse(uids[3]);
             }
             else
             {
-                results.Ruid = results.Euid = results.Suid = results.Fuid = -1;
+                results.Ruid = results.Euid  = -1;
             }
 
             var gids = dict.GetValueOrDefault("Gid",string.Empty).Split('\t');
-            if (gids.Length >= 4)
+            if (gids.Length >= 2)
             {
                 results.Rgid = int.Parse(gids[0]);
                 results.Egid = int.Parse(gids[1]);
-                results.Sgid = int.Parse(gids[2]);
-                results.Fgid = int.Parse(gids[3]);
             }
             else
             {
-                results.Ruid = results.Euid = results.Suid = results.Fuid = -1;
+                results.Ruid = results.Euid = -1;
             }
-            //results.FDSize = int.Parse(dict["FDSize"]);
-            //results.Groups = dict["Groups"].Split(' ').Select(int.Parse).ToArray();
-            //results.VmPeek = dict["VmPeek"];
+
             result = results;
             return true;
         }
 
-        private static T GetValueOrDefault<T>(this IDictionary<string,T>dictionary, string key, T @default=default)
-        {
-            if (!dictionary.TryGetValue(key, out var result))
-            {
-                return @default;
-            }
-
-            return result;
-        }
+        private static T GetValueOrDefault<T>(this IDictionary<string,T>dictionary, string key, T @default=default) => 
+            dictionary.TryGetValue(key, out var result) ? result : @default;
 
         private static KeyValuePair<string, string> ToKeyValue(string source, char delimiter)
         {
@@ -223,31 +206,16 @@ namespace Linux
         internal struct ParsedStatus
         {
             internal string Name;
-            internal int Umask;
             internal char State;
-            internal int Tgid;
-            internal int Ngid;
             internal int Pid;
             internal int Ppid;
-            internal int TracerPid;
 
             internal int Ruid;
             internal int Euid;
-            internal int Suid;
-            internal int Fuid;
 
 
             internal int Rgid;
             internal int Egid;
-            internal int Sgid;
-            internal int Fgid;
-
-            //internal int FDSize;
-            //internal int[] Groups;
-            //internal int VmPeek; //KB
-            //internal int VmSize; //KB
-
-            internal Dictionary<string, string> StatusContents;
         }
     }
 }
