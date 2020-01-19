@@ -159,4 +159,15 @@ ProcessManager.Instance.Kill((processInfo)=>processInfo.ProcessName == "some_pro
 
 ```
 
+### License
+
+This software is distributed under the terms of the MIT License (MIT).
+
+### Authors
+
+Alexander Chermyanin / [LinkedIn](https://www.linkedin.com/in/alexander-chermyanin)
+
+
+
 Contributions and bugs reports are welcome.
+
