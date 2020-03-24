@@ -5,6 +5,10 @@
 
 Process manager for linux. It's can retrieve processes with linux specific info (uid of owner,gid of owner, executable path ...).
 
+Help support the project:
+
+<a href="https://www.buymeacoffee.com/flamencist" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
 Sample usage
 
 ```cs
