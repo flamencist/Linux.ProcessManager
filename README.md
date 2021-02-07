@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/flamencist/Linux.ProcessManager.svg?branch=master)](https://travis-ci.org/flamencist/Linux.ProcessManager)
 [![NuGet](https://img.shields.io/nuget/v/Linux.ProcessManager.svg)](https://www.nuget.org/packages/Linux.ProcessManager/)
+[![Total NuGet downloads](https://img.shields.io/nuget/dt/Linux.ProcessManager?color=blue&label=downloads&logo=nuget)](https://www.nuget.org/stats/packages/Linux.ProcessManager?groupby=Version&groupby=ClientName&groupby=ClientVersion "Total NuGet downloads")
 
 Process manager for linux. It's can retrieve processes with linux specific info (uid of owner,gid of owner, executable path ...).
 
